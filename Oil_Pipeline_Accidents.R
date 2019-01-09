@@ -32,7 +32,7 @@ head(OilAccidents)
 OilAccidents$Operator_ID <- as.character(OilAccidents$Operator_ID)
 summary(OilAccidents)
 
-# Graph1 : Line Chart number of accidents happened in each year(2006-2010). Author: Yaya Liu
+# Graph1 : line Chart shows the number of accidents happened in each year(2006-2010)
 AccidentTable <- table(OilAccidents$Accident_Year)
 AccidentFrame = as.data.frame(AccidentTable)
 summary(AccidentFrame)
@@ -58,7 +58,7 @@ ggplot(AccidentFrame, aes(x = AccidentFrame$XYear, y = AccidentFrame$YFreq)) +
   theme(plot.title = element_text(hjust = 0.5)) 
 
 
-# Graph2: Bar chart shows occurance of different causes
+# Graph2: bar chart shows occurance of different causes
 OilAccidents <- within(OilAccidents,Cause_Category <- factor(Cause_Category,
                                                              levels=names(sort(table(Cause_Category), 
                                                                                decreasing=FALSE))))
@@ -81,7 +81,7 @@ ggplot(OilAccidents, aes(x = Cause_Category, fill = as.character(OilAccidents$Ac
   coord_flip() 
 
 
-# Graph3: Line chart shows the number of accidents happened in each month
+# Graph3: line chart shows the number of accidents happened in each month
 AccidentDates <- as.Date(OilAccidents$Accident_Date_Time, format = "%m/%d/%Y")
 month(AccidentDates)
 MonthFrame = as.data.frame(table(month(AccidentDates)))
@@ -99,10 +99,12 @@ ggplot(MonthFrame, aes(x = MonthFrame$XMonth, y = MonthFrame$YFreqMonth)) +
     x = "Month",
     y = "Count",
     title = "Number of Accidents per Month"
-  )
+  ) +
+  scale_x_discrete(labels=c("Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.",
+                            "Aug.", "Sep.", "Oct.", "Nov.", "Dec."))
 
 
-#Graph 4 Redesign: Create coningnecy table(Operator IDs, Accident of numbers), total 211 operaters.
+#Graph 4: scatter plot shows the 10 worst operaters by the number of Accidents
 ot = table(OilAccidents$Operator_ID)
 ot
 otsort_y <- sort(as.numeric(ot))
@@ -132,7 +134,7 @@ ggplot(data = otdata, aes(x=ot_x, y=otsort_y)) +
                    segment.color = 'grey50') +
 theme(plot.title = element_text(hjust = 0.5)) 
 
-#Graph5 Bar graph shows the operaters grouped by the number of Accidents.
+#Graph5: bar graph shows the number of operaters grouped by the number of Accidents
 act = table(ot)
 actdata = as.data.frame(act)
 names(actdata)[1] = 'Accident_Numbers'
